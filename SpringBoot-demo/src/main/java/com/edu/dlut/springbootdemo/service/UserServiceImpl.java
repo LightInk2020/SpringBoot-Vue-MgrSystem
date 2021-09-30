@@ -33,7 +33,11 @@ public class UserServiceImpl implements UserService {
         LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
         // search不为null时  才将search条件加入
         if (StringUtils.isNotBlank(search)) {
-            wrapper.like(User::getNickName, search);
+            wrapper.like(User::getId,search)
+                    .or()
+                    .like(User::getNickName, search)
+                    .or()
+                    .like(User::getUsername,search);
         }
         return userMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
     }
